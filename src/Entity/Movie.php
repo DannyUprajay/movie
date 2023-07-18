@@ -25,6 +25,9 @@ class Movie
     #[ORM\ManyToMany(targetEntity: Actor::class, inversedBy: 'movies')]
     private Collection $actors;
 
+    #[ORM\Column(length: 255)]
+    private ?string $poster = null;
+
     public function __construct()
     {
         $this->actors = new ArrayCollection();
@@ -86,6 +89,18 @@ class Movie
     public function __toString(): string
     {
         return $this->getFirstname() . ' ' . $this->getLastName();
+    }
+
+    public function getPoster(): ?string
+    {
+        return $this->poster;
+    }
+
+    public function setPoster(string $poster): static
+    {
+        $this->poster = $poster;
+
+        return $this;
     }
 
 }
