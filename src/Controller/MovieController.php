@@ -5,10 +5,12 @@ namespace App\Controller;
 use App\Entity\Movie;
 use App\Form\MovieType;
 use App\Repository\MovieRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Service\FileUploader;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/movie')]
 class MovieController extends AbstractController
@@ -22,13 +24,19 @@ class MovieController extends AbstractController
     }
 
     #[Route('/new', name: 'app_movie_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, MovieRepository $movieRepository): Response
+    public function new(Request $request, MovieRepository $movieRepository , FileUploader $uploaderService): Response
     {
         $movie = new Movie();
         $form = $this->createForm(MovieType::class, $movie);
         $form->handleRequest($request);
 
+
         if ($form->isSubmitted() && $form->isValid()) {
+            $posterFile = $form->get('poster')->getData();
+            if ($posterFile) {
+                $posterFileName = $uploaderService->upload($posterFile);
+                $movie->setPoster($posterFileName);
+            }
             $movieRepository->save($movie, true);
 
             return $this->redirectToRoute('app_movie_index', [], Response::HTTP_SEE_OTHER);
@@ -49,14 +57,19 @@ class MovieController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_movie_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Movie $movie, MovieRepository $movieRepository): Response
+    public function edit(Request $request, Movie $movie, MovieRepository $movieRepository , FileUploader $uploaderService): Response
     {
         $form = $this->createForm(MovieType::class, $movie);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $posterFile = $form->get('poster')->getData();
+            if ($posterFile) {
+                $posterFileName = $uploaderService->upload($posterFile);
+                $movie->setPoster($posterFileName);
+            }
+            
             $movieRepository->save($movie, true);
-
             return $this->redirectToRoute('app_movie_index', [], Response::HTTP_SEE_OTHER);
         }
 

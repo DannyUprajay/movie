@@ -17,7 +17,7 @@
         <tbody>
         {% for movie in movies %}
             <tr>
-                <td>{{ movie.id }}</td>
+                <td><img style="height: 250px; " src="{{ asset('uploads/posters/') ~ movie.poster }}" class="logo" alt=""></td>
                 <td>{{ movie.title }}</td>
                 <td>{{ movie.releaseDate ? movie.releaseDate|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
