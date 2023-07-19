@@ -19,12 +19,26 @@
                 <th>ReleaseDate</th>
                 <td>{{ movie.releaseDate ? movie.releaseDate|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
+            {% for actor in movie.actors %}
+                <tr>
+                    <th>Name</th>
+                    <td>{{ actor.lastName }}</td>
+                </tr>
+                <tr>
+                    <th>First Name</th>
+                    <td>{{ actor.firstName }}</td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
 
     <a href="{{ path('app_movie_index') }}">back to list</a>
-
+    {% if is_granted('ROLE_ADMIN') %}
     <a href="{{ path('app_movie_edit', {'id': movie.id}) }}">edit</a>
+    {% endif %}
 
+
+    {% if is_granted('ROLE_ADMIN') %}
     {{ include('movie/_delete_form.html.twig') }}
+    {% endif %}
 {% endblock %}

@@ -22,7 +22,9 @@
                 <td>{{ actor.lastName }}</td>
                 <td>
                     <a href="{{ path('app_actor_show', {'id': actor.id}) }}">show</a>
+                    {% if is_granted('ROLE_ADMIN') %}
                     <a href="{{ path('app_actor_edit', {'id': actor.id}) }}">edit</a>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}
@@ -32,6 +34,7 @@
         {% endfor %}
         </tbody>
     </table>
-
+    {% if is_granted('ROLE_ADMIN') %}
     <a href="{{ path('app_actor_new') }}">Create new</a>
+    {% endif %}
 {% endblock %}

@@ -24,7 +24,11 @@
 
     <a href="{{ path('app_actor_index') }}">back to list</a>
 
+    {% if is_granted('ROLE_ADMIN') %}
     <a href="{{ path('app_actor_edit', {'id': actor.id}) }}">edit</a>
+    {% endif %}
 
+    {% if is_granted('ROLE_ADMIN') %}
     {{ include('actor/_delete_form.html.twig') }}
+    {% endif %}
 {% endblock %}

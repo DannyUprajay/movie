@@ -9,9 +9,13 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-    <h1>Hello {{ name }}! ✅</h1>
-    <h2 class="text-danger"> salut </h2>
+    {% if app.user.userName  is defined %}
+        <h1>Welcome back
+            {{ app.user.userName}}
+            ✅</h1>
+    {%  else %}
+        <h1>Hello</h1>
+    {% endif %}
 
     This friendly message is coming from:
     <ul>
